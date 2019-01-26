@@ -10,6 +10,8 @@ public class Bird : MonoBehaviour
     private float deltaTime;
     private bool changeDir;
 
+    private float velX;
+
     // Use this for initialization
     void Start()
     {
@@ -26,8 +28,9 @@ public class Bird : MonoBehaviour
             startXPos = 30;
         }
         float startYPos = Random.Range(7, 12);
-        rigidbody.position = new Vector3(startXPos, startYPos, 4);
-        rigidbody.velocity = new Vector3(startXPos > 0 ? -10 : 10, rigidbody.velocity.y, rigidbody.velocity.z);
+        velX = Random.Range(12, 20);
+        rigidbody.position = new Vector3(startXPos, startYPos, rigidbody.position.z);
+        rigidbody.velocity = new Vector3(startXPos > 0 ? -velX : velX, rigidbody.velocity.y, rigidbody.velocity.z);
         changeDir = false;
         clicked = false;
     }
@@ -41,21 +44,40 @@ public class Bird : MonoBehaviour
         transform.Translate(Vector3.forward * dt * 4);
   
         */
+
         if (!clicked)
         {
             if (rigidbody.position.x < -30 || rigidbody.position.x > 30)
             {
-                rigidbody.velocity = new Vector3(-rigidbody.velocity.x, rigidbody.velocity.z, rigidbody.velocity.z);
+                rigidbody.velocity = new Vector3(-rigidbody.velocity.x, rigidbody.velocity.y, rigidbody.velocity.z);
             }
         }
         // Debug.Log(deltaTime);
-        transform.rotation = Quaternion.LookRotation(GetComponent<Rigidbody>().velocity);
+        if (rigidbody.velocity != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(GetComponent<Rigidbody>().velocity);
+        }
+
 
     }
 
     void OnMouseDown()
     {
+        if (!clicked)
+        {
             clicked = true;
             rigidbody.velocity = new Vector3(0, -30, 0);
+        }
+
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.tag == "palmTree")
+        {
+            Debug.Log("palmTree detected");
+            rigidbody.velocity = Vector3.zero;
+            transform.rotation = Quaternion.LookRotation(GetComponent<Rigidbody>().velocity);
+        }
     }
 }
