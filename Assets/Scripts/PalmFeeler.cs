@@ -28,7 +28,7 @@ public class PalmFeeler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (birdCount > 0 && !completed){
+		if (birdCount > 0){
 
 			time += Time.deltaTime * birdCount;
 
@@ -63,7 +63,7 @@ public class PalmFeeler : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider other) {
-		if (other.tag == "bird" && birdCount < maxBirdCount) {
+		if (other.tag == "bird" && birdCount < maxBirdCount && !completed) {
 			Debug.Log("detected bird");
 			birdCount++;
 			birdsInPlace.Add(other.gameObject);
