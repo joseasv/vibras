@@ -7,6 +7,7 @@ public class Bird : MonoBehaviour
 
     private Rigidbody rigidbody;
     private bool clicked;
+    private bool available;
     private bool isTurning;
 
     private float turningTime;
@@ -25,6 +26,7 @@ public class Bird : MonoBehaviour
     }
 
     public void init() {
+        available = true;
         float randomSide = Random.Range(0, 100);
         float startXPos;
         if (randomSide < 50)
@@ -35,7 +37,7 @@ public class Bird : MonoBehaviour
         {
             startXPos = 30;
         }
-        float startYPos = Random.Range(7, 12);
+        float startYPos = Random.Range(16, 19);
         velX = Random.Range(12, 20);
         rigidbody.position = new Vector3(startXPos, startYPos, 9);
         rigidbody.velocity = new Vector3(startXPos > 0 ? -velX : velX, 0, 0);
@@ -45,6 +47,10 @@ public class Bird : MonoBehaviour
 
     public bool isClicked() {
            return clicked;
+    }
+
+    public bool isAvailable() {
+        return available;
     }
 
     // Update is called once per frame
@@ -115,5 +121,6 @@ public class Bird : MonoBehaviour
             float randomSide = Random.Range(0, 100);
             float finalVelX = randomSide < 50 ? -velX : velX;
             rigidbody.velocity = new Vector3(finalVelX, 0, 0);
+            available = false;
     }
 }

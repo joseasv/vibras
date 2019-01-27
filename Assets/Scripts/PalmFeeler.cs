@@ -50,7 +50,7 @@ public class PalmFeeler : MonoBehaviour {
 	}
 
 	public bool isCompleted() {
-		return leavesCount >= maxLeaves;
+		return completed;
 	}
 
 	private void freeBirds() {
@@ -65,9 +65,12 @@ public class PalmFeeler : MonoBehaviour {
 	private void OnTriggerEnter(Collider other) {
 		if (other.tag == "bird" && birdCount < maxBirdCount && !completed) {
 			Debug.Log("detected bird");
-			birdCount++;
-			birdsInPlace.Add(other.gameObject);
-			other.gameObject.GetComponent<Bird>().workingMode(birdCount);
+			if (other.GetComponent<Bird>().isAvailable()) {
+				birdCount++;
+				birdsInPlace.Add(other.gameObject);
+				other.gameObject.GetComponent<Bird>().workingMode(birdCount);
+			}
+			
 		}
 	}
 }
